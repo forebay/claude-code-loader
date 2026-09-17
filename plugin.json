@@ -34,7 +34,7 @@
     },
     "loader": {
       "id": "claude-code-loader",
-      "url": "intisy-ai/claude-code-loader"
+      "url": "forebay/claude-code-loader"
     },
     "commandsSubdir": "commands",
     "proxyPort": 34567,

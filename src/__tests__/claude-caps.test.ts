@@ -80,26 +80,26 @@ test("pickAiTitle: skips malformed/non-JSON lines", () => {
 // ---- parseEnabledPlugins -----------------------------------------------------
 
 test("parseEnabledPlugins: splits name@marketplace and carries the enabled bool", () => {
-  const settings = { enabledPlugins: { "ecc@intisy-ai/marketplace": true, "superpowers@obra": false } };
+  const settings = { enabledPlugins: { "ecc@forebay/marketplace": true, "superpowers@obra": false } };
   const out = parseEnabledPlugins(settings, null);
   const ecc = out.find((p) => p.name === "ecc");
   const sp = out.find((p) => p.name === "superpowers");
-  expect(ecc.source).toBe("intisy-ai/marketplace");
+  expect(ecc.source).toBe("forebay/marketplace");
   expect(ecc.enabled).toBe(true);
   expect(sp.source).toBe("obra");
   expect(sp.enabled).toBe(false);
 });
 
 test("parseEnabledPlugins: splits on the LAST @ so an @-containing name keeps its marketplace", () => {
-  const settings = { enabledPlugins: { "@scope/pkg@intisy-ai/marketplace": true } };
+  const settings = { enabledPlugins: { "@scope/pkg@forebay/marketplace": true } };
   const out = parseEnabledPlugins(settings, null);
   expect(out[0].name).toBe("@scope/pkg");
-  expect(out[0].source).toBe("intisy-ai/marketplace");
+  expect(out[0].source).toBe("forebay/marketplace");
 });
 
 test("parseEnabledPlugins: looks up version from installed_plugins.json", () => {
-  const settings = { enabledPlugins: { "ecc@intisy-ai/marketplace": true } };
-  const installed = { version: 2, plugins: { "ecc@intisy-ai/marketplace": [{ version: "1.2.3" }] } };
+  const settings = { enabledPlugins: { "ecc@forebay/marketplace": true } };
+  const installed = { version: 2, plugins: { "ecc@forebay/marketplace": [{ version: "1.2.3" }] } };
   const out = parseEnabledPlugins(settings, installed);
   expect(out[0].version).toBe("1.2.3");
 });
@@ -107,7 +107,7 @@ test("parseEnabledPlugins: looks up version from installed_plugins.json", () => 
 // Absent rather than null: basekit/loader's ForeignPlugin declares `version?: string`, and every
 // consumer reads it as `version || ""`, so the two were always interchangeable to a caller.
 test("parseEnabledPlugins: version is absent when not present in installed_plugins.json", () => {
-  const settings = { enabledPlugins: { "ecc@intisy-ai/marketplace": true } };
+  const settings = { enabledPlugins: { "ecc@forebay/marketplace": true } };
   const out = parseEnabledPlugins(settings, {});
   expect(out[0].version).toBeUndefined();
 });
@@ -121,23 +121,23 @@ test("parseEnabledPlugins: returns [] when enabledPlugins is absent", () => {
 
 test("parseMarketplaces: extracts repo/url source from known_marketplaces.json shape", () => {
   const known = {
-    official: { source: { source: "github", repo: "intisy-ai/marketplace" }, lastUpdated: 1 },
+    official: { source: { source: "github", repo: "forebay/marketplace" }, lastUpdated: 1 },
     custom: { source: { source: "git", url: "https://example.com/repo.git" } },
   };
   const out = parseMarketplaces(known, null);
-  expect(out.find((m) => m.name === "official").source).toBe("intisy-ai/marketplace");
+  expect(out.find((m) => m.name === "official").source).toBe("forebay/marketplace");
   expect(out.find((m) => m.name === "custom").source).toBe("https://example.com/repo.git");
 });
 
 test("parseMarketplaces: merges settings.json's extraKnownMarketplaces, deduped by name (known wins)", () => {
-  const known = { official: { source: { repo: "intisy-ai/marketplace" } } };
+  const known = { official: { source: { repo: "forebay/marketplace" } } };
   const extra = {
     official: { source: { repo: "duplicate-should-be-ignored" } },
     mine: { source: { url: "https://example.com/mine.git" } },
   };
   const out = parseMarketplaces(known, extra);
   expect(out.length).toBe(2);
-  expect(out.find((m) => m.name === "official").source).toBe("intisy-ai/marketplace");
+  expect(out.find((m) => m.name === "official").source).toBe("forebay/marketplace");
   expect(out.find((m) => m.name === "mine").source).toBe("https://example.com/mine.git");
 });
 
@@ -209,8 +209,8 @@ describe("ownerOfCapability", () => {
   });
 
   it("carries the url the home has for it, so an absent clone can still be installed", () => {
-    expect(ownerOfCapability(manifests, "custom-endpoints", (id) => `https://github.com/intisy-ai/${id}`))
-      .toEqual({ id: "endpoints", url: "https://github.com/intisy-ai/endpoints" });
+    expect(ownerOfCapability(manifests, "custom-endpoints", (id) => `https://github.com/forebay/${id}`))
+      .toEqual({ id: "endpoints", url: "https://github.com/forebay/endpoints" });
   });
 
   it("takes the first declarer, in the order the home reported them", () => {

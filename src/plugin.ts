@@ -29,7 +29,7 @@ defineReadme({
     "It installs a `cc` command that opens an interactive TUI for switching projects, managing plugins, " +
     "and signing in to providers, and runs an always-on local **proxy** that routes Claude requests through " +
     "provider accounts (e.g. claude-code-auth subscription accounts, antigravity) with rate-limit failover. " +
-    "It also drives [plugin-updater](https://github.com/intisy-ai/plugin-updater) on startup.",
+    "It also drives [plugin-updater](https://github.com/forebay/plugin-updater) on startup.",
   architecture: `flowchart TD
     START[Claude Code startup] -->|activate| PLUGIN[plugin.js]
     PLUGIN -->|earlyLaunch| UPDATER[plugin-updater]

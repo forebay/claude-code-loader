@@ -23,7 +23,7 @@
   "tsconfig": "./tsconfig.json",
   "externalSymbolLinkMappings": {
     "@intisy-ai/basekit": {
-      "*": "https://github.com/intisy-ai/basekit"
+      "*": "https://github.com/forebay/basekit"
     }
   },
   "entryPoints": [
@@ -34,7 +34,7 @@
     "src/notify-drain.ts"
   ],
   "name": "claude-code-loader",
-  "sourceLinkTemplate": "https://github.com/intisy-ai/claude-code-loader/blob/{gitRevision}/{path}#L{line}",
+  "sourceLinkTemplate": "https://github.com/forebay/claude-code-loader/blob/{gitRevision}/{path}#L{line}",
   "intentionallyNotExported": [
     "AppSettings",
     "CapabilityOwner",
