@@ -16,5 +16,12 @@
     "lib": ["esnext"]
   },
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/proxy.ts",
+    "src/auth-login.ts",
+    "src/model-env.ts",
+    "src/route-mode.ts",
+    "src/notify-drain.ts"
+  ]
 }

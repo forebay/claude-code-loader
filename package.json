@@ -1,8 +1,9 @@
 {
   "name": "claude-code-loader",
   "version": "1.13.0",
-  "description": "TUI launcher and cc shell command for Claude Code.",
-  "main": "dist/plugin.js",
+  "description": "Loader standard for Claude Code on the shared forebay host: the application, its cc command and its background proxy.",
+  "main": "dist/standard.js",
+  "types": "dist/standard.d.ts",
   "type": "module",
   "license": "MIT",
   "author": "intisy",
@@ -13,9 +14,8 @@
   "keywords": [
     "claude",
     "claude-code",
-    "plugin",
-    "launcher",
-    "tui"
+    "loader",
+    "forebay"
   ],
   "files": [
     "dist/",
@@ -26,32 +26,15 @@
   "engines": {
     "node": ">=20.19.0"
   },
-  "claudeHub": {
-    "daemon": {
-      "script": "dist/proxy.js",
-      "runtime": "node",
-      "port": 34567,
-      "healthCheckUrl": "http://127.0.0.1:34567/health"
-    }
-  },
   "scripts": {
-    "build": "npx tsc && node build.mjs",
-    "postbuild": "node dist/plugin.js readme",
+    "build": "tsc && forebay-host bundle-loader . --out dist/host",
     "prepublishOnly": "npm run build",
-    "test": "npm run build && vitest run",
-    "docs": "typedoc"
+    "test": "npm run build && vitest run"
   },
   "devDependencies": {
-    "@intisy/bayonet": "^1.8.0",
+    "@forebay/host": "file:./siblings/host",
     "@types/node": "^25.9.1",
-    "esbuild": "^0.25.12",
-    "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "vitest": "^3.2.6"
-  },
-  "dependencies": {
-    "@intisy/bayonet": "^1.8.0",
-    "@intisy-ai/basekit": "^5.0.0",
-    "@intisy-ai/claude-code-proxy": "^2.0.0"
   }
 }
