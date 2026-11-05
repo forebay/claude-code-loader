@@ -27,7 +27,7 @@
     "node": ">=20.19.0"
   },
   "scripts": {
-    "build": "tsc && forebay-host bundle-loader . --out dist/host",
+    "build": "tsc && node scripts/bundle-loader.ts",
     "prepublishOnly": "npm run build",
     "test": "npm run build && vitest run"
   },

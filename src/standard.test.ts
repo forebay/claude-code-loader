@@ -9,7 +9,9 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 const REPOSITORY_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const HOST_BUNDLE = join(REPOSITORY_ROOT, "dist", "host");
 const PACKAGE = JSON.parse(readFileSync(join(REPOSITORY_ROOT, "package.json"), "utf8")) as { version: string };
-const HOST_COMMAND_LINE = join(dirname(createRequire(import.meta.url).resolve("@forebay/host/package.json")), "dist", "cli", "main.js");
+const HOST_ROOT = dirname(createRequire(import.meta.url).resolve("@forebay/host/package.json"));
+const LIBRARY_BUILD = join(HOST_ROOT, "siblings", "library", "build", "bin");
+const NATIVE_HOST = process.platform === "win32" ? join(LIBRARY_BUILD, "Release", "forebay-host.exe") : join(LIBRARY_BUILD, "forebay-host");
 
 const RULED_STANDARD = {
   application: {
@@ -34,15 +36,15 @@ afterEach(() => {
 });
 
 describe("the loader's host bundle", () => {
-  it("holds only a host.json carrying the ruled standard under the loader's name and version", () => {
+  it("holds only a host.json carrying the ruled standard under the loader's name, version and the native runtime", () => {
     expect(readdirSync(HOST_BUNDLE)).toEqual(["host.json"]);
     const manifest = JSON.parse(readFileSync(join(HOST_BUNDLE, "host.json"), "utf8")) as Record<string, unknown>;
-    expect(manifest).toEqual({ id: "claude-code-loader", version: PACKAGE.version, ...RULED_STANDARD });
+    expect(manifest).toEqual({ id: "claude-code-loader", version: PACKAGE.version, runtime: "native", ...RULED_STANDARD });
   });
 
-  it("is listed by a catalog built from it with its application", () => {
-    execFileSync(process.execPath, [HOST_COMMAND_LINE, "catalog", "build", "--host", HOST_BUNDLE, "--out", base], { encoding: "utf8" });
-    const catalog = JSON.parse(readFileSync(join(base, "catalog.json"), "utf8")) as { items: Record<string, { kind: string; application?: unknown }> };
-    expect(catalog.items["claude-code-loader"]).toMatchObject({ kind: "host", application: RULED_STANDARD.application });
+  it("is listed by the native host's catalog build with its application and the native runtime", () => {
+    execFileSync(NATIVE_HOST, ["catalog", "build", "--host", HOST_BUNDLE, "--out", base], { encoding: "utf8" });
+    const catalog = JSON.parse(readFileSync(join(base, "catalog.json"), "utf8")) as { items: Record<string, { kind: string; runtime?: string; application?: unknown }> };
+    expect(catalog.items["claude-code-loader"]).toMatchObject({ kind: "host", runtime: "native", application: RULED_STANDARD.application });
   });
 });
