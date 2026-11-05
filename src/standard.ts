@@ -9,5 +9,6 @@ export const standard: LoaderStandard = {
     packages: { npm: "@anthropic-ai/claude-code" },
   },
   pathCommands: { requested: ["cc"], minimum: 1 },
-  background: ["claude-code-proxy"],
+  background: [],
+  plugins: ["claude-code-proxy"],
 };

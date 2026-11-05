@@ -1,7 +1,7 @@
 {
   "name": "claude-code-loader",
   "version": "1.13.0",
-  "description": "Loader standard for Claude Code on the shared forebay host: the application, its cc command and its background proxy.",
+  "description": "Loader standard for Claude Code on the shared forebay host: the application, its cc command and the proxy plugin it requires.",
   "main": "dist/standard.js",
   "types": "dist/standard.d.ts",
   "type": "module",
@@ -34,6 +34,8 @@
   "devDependencies": {
     "@forebay/host": "file:./siblings/host",
     "@types/node": "^25.9.1",
+    "@weivel/typescript": "file:./siblings/host/siblings/typescript",
+    "anthropic-translator": "file:./siblings/anthropic-translator",
     "typescript": "^6.0.3",
     "vitest": "^3.2.6"
   }
