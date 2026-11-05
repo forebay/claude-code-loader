@@ -37,7 +37,7 @@ let world: World;
 let catalog: string;
 let upstream: FakeUpstream;
 let proxyPort: number;
-let command: string;
+let command: string | undefined;
 
 function systemPath(): string[] {
   const systemRoot = process.env.SystemRoot;
@@ -106,13 +106,19 @@ async function untilSessionHostStopped(): Promise<void> {
 
 /** @implNote Named from the install report, never assumed: `cc` is taken where a C compiler is on the PATH, and the shim is then `cc2`. */
 function ccShim(): string {
+  if (command === undefined) throw new Error(`${LOADER} is not installed, so it has no command yet`);
   return join(world.environment.SPISOR_STATE as string, "bin", IS_WINDOWS ? `${command}.exe` : command);
 }
 
-function installedCommand(report: string): string {
-  const loaders = (JSON.parse(report) as { loaders: Array<{ id: string; commands: string[] }> }).loaders;
-  const name = loaders.find((loader) => loader.id === LOADER)?.commands[0];
-  if (name === undefined) throw new Error(`the install registered no command for ${LOADER}: ${report}`);
+/** The part of `forebay-host install`'s report the test reads. */
+interface InstallReport {
+  enabled: string[];
+  loaders: Array<{ id: string; commands: string[] }>;
+}
+
+function installedCommand(report: InstallReport): string {
+  const name = report.loaders.find((loader) => loader.id === LOADER)?.commands[0];
+  if (name === undefined) throw new Error(`the install registered no command for ${LOADER}: ${JSON.stringify(report)}`);
   return name;
 }
 
@@ -158,10 +164,13 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (!RUNS) return;
-  await upstream?.close();
-  forebayHost(world, ["remove", LOADER]);
-  expect(userPathEntriesUnder(world.base)).toEqual([]);
-  rmSync(world.base, { recursive: true, force: true, maxRetries: REMOVE_RETRIES, retryDelay: REMOVE_RETRY_MILLISECONDS });
+  try {
+    await upstream?.close();
+    if (command !== undefined) checkedForebayHost(world, ["remove", LOADER]);
+    expect(userPathEntriesUnder(world.base)).toEqual([]);
+  } finally {
+    rmSync(world.base, { recursive: true, force: true, maxRetries: REMOVE_RETRIES, retryDelay: REMOVE_RETRY_MILLISECONDS });
+  }
 }, SETUP_TIMEOUT_MILLISECONDS);
 
 describe.runIf(RUNS).sequential("cc driving the real Claude Code through the session host's proxy", () => {
@@ -172,7 +181,9 @@ describe.runIf(RUNS).sequential("cc driving the real Claude Code through the ses
   });
 
   it("installs and enables claude-code-proxy and no other plugin", () => {
-    command = installedCommand(checkedForebayHost(world, ["install", "--catalog", catalog]));
+    const report = JSON.parse(checkedForebayHost(world, ["install", "--catalog", catalog])) as InstallReport;
+    command = installedCommand(report);
+    expect(report.enabled).toEqual(["claude-code-proxy"]);
     const bundles = installedBundles();
     expect(bundles).toContain("claude-code-proxy");
     expect(bundles).not.toContain("stub-auth");
