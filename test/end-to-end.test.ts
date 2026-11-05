@@ -15,7 +15,7 @@ import { userPathEntriesUnder } from "./user-path.js";
 
 const IS_WINDOWS = process.platform === "win32";
 const ON_CI = process.env.CI === "true";
-const STUB_AUTH_TEXT = "Hello from stub-auth";
+const STUB_AUTH_TEXT = "Hello from stub-auth: the provider pipeline works end to end.";
 const STUB_CHAIN = [{ provider: "stub-auth", model: "stub-model" }];
 /** @implNote stub-auth's model ids name no Claude tier, so no slot derives to it; a user maps them as here. */
 const STUB_MODEL_MAP = { opus: STUB_CHAIN, sonnet: STUB_CHAIN, haiku: STUB_CHAIN, fable: STUB_CHAIN };
