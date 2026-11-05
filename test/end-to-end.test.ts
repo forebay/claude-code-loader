@@ -22,6 +22,9 @@ const STUB_MODEL_MAP = { opus: STUB_CHAIN, sonnet: STUB_CHAIN, haiku: STUB_CHAIN
 const CLAUDE_TIMEOUT_MILLISECONDS = 180000;
 const SETUP_TIMEOUT_MILLISECONDS = 600000;
 const SESSION_STOP_MILLISECONDS = 60000;
+/** @implNote On Windows the last session host keeps the base busy as its working directory until its hold interval runs out. */
+const REMOVE_RETRIES = 30;
+const REMOVE_RETRY_MILLISECONDS = 1000;
 
 /**
  * @implNote The install requests the `cc` command, which on Windows writes the real user PATH
@@ -158,7 +161,7 @@ afterAll(async () => {
   await upstream?.close();
   forebayHost(world, ["remove", LOADER]);
   expect(userPathEntriesUnder(world.base)).toEqual([]);
-  rmSync(world.base, { recursive: true, force: true });
+  rmSync(world.base, { recursive: true, force: true, maxRetries: REMOVE_RETRIES, retryDelay: REMOVE_RETRY_MILLISECONDS });
 }, SETUP_TIMEOUT_MILLISECONDS);
 
 describe.runIf(RUNS).sequential("cc driving the real Claude Code through the session host's proxy", () => {
