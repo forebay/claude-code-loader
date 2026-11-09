@@ -1,0 +1,9 @@
+{
+  "<state>/entries/sample-loader": null,
+  "<state>/entries/sample-loader/.claude-plugin": null,
+  "<state>/entries/sample-loader/.claude-plugin/marketplace.json": "{\n  \"name\": \"spisor\",\n  \"owner\": {\n    \"name\": \"spisor\"\n  },\n  \"description\": \"Starts the spisor host when Claude Code starts\",\n  \"plugins\": [\n    {\n      \"name\": \"spisor\",\n      \"source\": \".\",\n      \"description\": \"Registers the spisor host each time a session starts\"\n    }\n  ]\n}\n",
+  "<state>/entries/sample-loader/.claude-plugin/plugin.json": "{\n  \"name\": \"spisor\",\n  \"description\": \"Registers the spisor host each time a session starts\"\n}\n",
+  "<state>/entries/sample-loader/hooks": null,
+  "<state>/entries/sample-loader/hooks/hooks.json": "{\n  \"hooks\": {\n    \"SessionStart\": [\n      {\n        \"hooks\": [\n          {\n            \"type\": \"command\",\n            \"command\": \"<cache>/boot/forebay-boot\",\n            \"args\": [\n              \"forebay-host\",\n              \"hook\",\n              \"sample-loader\",\n              \"session-start\"\n            ],\n            \"timeout\": 30\n          }\n        ]\n      }\n    ]\n  }\n}\n",
+  "<home>/settings.json": "{\n  \"enabledPlugins\": {\n    \"spisor@spisor\": true\n  },\n  \"extraKnownMarketplaces\": {\n    \"spisor\": {\n      \"source\": {\n        \"source\": \"directory\",\n        \"path\": \"<state>/entries/sample-loader\"\n      }\n    }\n  }\n}\n"
+}
