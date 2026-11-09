@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { standard } from "./standard.js";
 
 const REPOSITORY_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const HOST_BUNDLE = join(REPOSITORY_ROOT, "dist", "host");
@@ -20,6 +21,15 @@ const RULED_STANDARD = {
     binary: "claude",
     home: { envOverride: "HUB_CLAUDE_DIR", nativeEnv: "CLAUDE_CONFIG_DIR", candidates: ["~/.claude", "~/.config/claude"] },
     packages: { npm: "@anthropic-ai/claude-code" },
+    proxy: {
+      baseUrlVariable: "ANTHROPIC_BASE_URL",
+      placeholder: { variable: "ANTHROPIC_AUTH_TOKEN", value: "sk-ant-loader-proxy" },
+      ownLogin: {
+        variables: ["ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"],
+        stateFile: { directoryVariable: "CLAUDE_CONFIG_DIR", name: ".claude.json", member: "oauthAccount" },
+      },
+    },
+    entry: standard.application.entry,
   },
   pathCommands: { requested: ["cc"], minimum: 1 },
   background: [],

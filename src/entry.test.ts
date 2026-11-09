@@ -41,7 +41,7 @@ function writtenEntry(): void {
     });
     const answer = (service("install").entry as (argument: unknown) => { written?: boolean })({
       places: known,
-      loader: { id: LOADER_ID, application: { id: standard.application.id, label: standard.application.label }, home: places.home },
+      loader: { id: LOADER_ID, application: standard.application, home: places.home },
     });
     expect(answer.written).toBe(true);
   } finally {
