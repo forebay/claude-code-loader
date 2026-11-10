@@ -15,9 +15,9 @@ import { userPathEntriesUnder } from "./user-path.js";
 
 const IS_WINDOWS = process.platform === "win32";
 const ON_CI = process.env.CI === "true";
-const STUB_AUTH_TEXT = "Hello from stub-auth: the provider pipeline works end to end.";
-const STUB_CHAIN = [{ provider: "stub-auth", model: "stub-model" }];
-/** @implNote stub-auth's model ids name no Claude tier, so no slot derives to it; a user maps them as here. */
+const PROVIDER_STUB_TEXT = "Hello from provider-stub: the provider pipeline works end to end.";
+const STUB_CHAIN = [{ provider: "provider-stub", model: "stub-model" }];
+/** @implNote provider-stub's model ids name no Claude tier, so no slot derives to it; a user maps them as here. */
 const STUB_MODEL_MAP = { opus: STUB_CHAIN, sonnet: STUB_CHAIN, haiku: STUB_CHAIN, fable: STUB_CHAIN };
 const CLAUDE_TIMEOUT_MILLISECONDS = 180000;
 const SETUP_TIMEOUT_MILLISECONDS = 600000;
@@ -186,8 +186,8 @@ describe.runIf(RUNS).sequential("cc driving the real Claude Code through the ses
     expect(report.enabled).toEqual(["claude-code-proxy"]);
     const bundles = installedBundles();
     expect(bundles).toContain("claude-code-proxy");
-    expect(bundles).not.toContain("stub-auth");
-    expect(bundles).not.toContain("claude-code-auth");
+    expect(bundles).not.toContain("provider-stub");
+    expect(bundles).not.toContain("claude-code-provider");
     expect(existsSync(ccShim())).toBe(true);
     setLoaderSetting(world, "proxy.port", proxyPort);
     setPluginConfig(world, "claude-code-proxy", "upstream", upstream.address);
@@ -202,15 +202,15 @@ describe.runIf(RUNS).sequential("cc driving the real Claude Code through the ses
     expect(messages.map((request) => request.headers["x-api-key"])).toEqual(messages.map(() => "test-key"));
   }, CLAUDE_TIMEOUT_MILLISECONDS);
 
-  it("answers from stub-auth once it is enabled and logged in, the upstream seeing nothing", async () => {
+  it("answers from provider-stub once it is enabled and logged in, the upstream seeing nothing", async () => {
     await untilSessionHostStopped();
-    checkedForebayHost(world, ["install", "--catalog", catalog, "--plugin", "stub-auth"]);
-    setLoaderSetting(world, "plugins.stub-auth.enabled", true);
+    checkedForebayHost(world, ["install", "--catalog", catalog, "--plugin", "provider-stub"]);
+    setLoaderSetting(world, "plugins.provider-stub.enabled", true);
     setLoaderSetting(world, "routing.modelMap", STUB_MODEL_MAP);
-    checkedForebayHost(world, ["action", LOADER, "stub-auth", "login"]);
+    checkedForebayHost(world, ["action", LOADER, "provider-stub", "login"]);
     const before = messagesReceived();
     const run = await cc();
-    expect(run.output).toContain(STUB_AUTH_TEXT);
+    expect(run.output).toContain(PROVIDER_STUB_TEXT);
     expect(run.status).toBe(0);
     expect(messagesReceived()).toBe(before);
   }, CLAUDE_TIMEOUT_MILLISECONDS);

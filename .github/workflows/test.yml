@@ -19,8 +19,8 @@ jobs:
         forebay/library siblings/host/siblings/forebay-library 0f882ba70e265bfb399e6e90ec47e504a5812676
         forebay/anthropic-translator siblings/anthropic-translator c82f45883876b594854cd3b8417b00691a6f8aa4
         forebay/claude-code-proxy siblings/claude-code-proxy d865515e3adc242ed0f9becd2aea58aa539202be
-        forebay/stub-auth siblings/stub-auth d7f87c4c4f5629a5d3446209b31de068bb3c8f4d
-        forebay/claude-code-auth siblings/claude-code-auth 074036785c87ef04c7872734f2c959e020d4f7ca
+        forebay/provider-stub siblings/provider-stub d7f87c4c4f5629a5d3446209b31de068bb3c8f4d
+        forebay/claude-code-provider siblings/claude-code-provider 074036785c87ef04c7872734f2c959e020d4f7ca
       node_install: npm ci --prefix siblings/host/siblings/model && npm ci --prefix siblings/host/siblings/typescript && npm ci --prefix siblings/host && npm install && npm install --prefix siblings/claude-code --no-save @anthropic-ai/claude-code@2.1.318
       node_build: cmake -S siblings/host/siblings/library -B siblings/host/siblings/library/build && cmake --build siblings/host/siblings/library/build --config Release && cmake -S siblings/host/siblings/forebay-library -B siblings/host/siblings/forebay-library/build && cmake --build siblings/host/siblings/forebay-library/build --config Release --target apps && npm run build --prefix siblings/host/siblings/typescript && npm run build --prefix siblings/host && npx tsc -p siblings/anthropic-translator/tsconfig.build.json && npm run build
       node_test: npm test

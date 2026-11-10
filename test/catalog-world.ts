@@ -18,7 +18,7 @@ const LIBRARY = join(HOST_ROOT, "siblings", "library");
 const BUILT = IS_WINDOWS ? join(LIBRARY, "build", "bin", "Release") : join(LIBRARY, "build", "bin");
 export const FOREBAY_HOST = join(BUILT, `forebay-host${EXECUTABLE_ENDING}`);
 
-export const PLUGINS = ["claude-code-proxy", "stub-auth", "claude-code-auth"];
+export const PLUGINS = ["claude-code-proxy", "provider-stub", "claude-code-provider"];
 
 /** A temp machine: its base directory and the environment every process of the test runs with. */
 export interface World {
