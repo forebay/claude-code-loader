@@ -12,17 +12,17 @@ jobs:
       toolchains: node cmake
       runners: '["ubuntu-latest","windows-latest","macos-latest"]'
       extra_repositories: |
-        forebay/host siblings/host 8238c09ef5347b667b251083beff586e20d629ff
+        forebay/host siblings/host ec684c69eec1088de85154eda45b7e033e04a731
         weivel/model siblings/host/siblings/model 606988fb178b04d3f53835e6d982c09f31081ef1
         weivel/typescript siblings/host/siblings/typescript 46bf872abbfcfe164294a9b3daa40fa0c26fff77
         spisor/library siblings/host/siblings/library 004a16b0e601327732dee63fea8f76fdfcc5d3a9
         forebay/forebay-library siblings/host/siblings/forebay-library 6fd0245f7bfbca794fe8b832b48c1eeb043f32fb
-        forebay/anthropic-translator siblings/anthropic-translator 649a7a3a75a720bd24b711de5ee96482373f20f8
-        forebay/claude-code-proxy siblings/claude-code-proxy fdb2640b2ac31e8b51cf5077317300b3ede2ce6f
-        forebay/provider-stub siblings/provider-stub 3cad7f6cf7889f6c7e05b96c4b268784ee051c8f
-        forebay/claude-code-provider siblings/claude-code-provider fe23db24be22a774fb6eea22ca4fab5ade39d651
+        forebay/anthropic-translator siblings/anthropic-translator 6e232e4121bafaece98f052639d8a53c7de729dd
+        forebay/claude-code-proxy siblings/claude-code-proxy 06917175945f1adbe119ca5305dbfcd870ee9d3d
+        forebay/provider-stub siblings/provider-stub 598f39dc4840511cb17b0a38627f3bf493021f2f
+        forebay/claude-code-provider siblings/claude-code-provider ae4f30d31c91470f6430661b4443f0b8ce8977e9
       node_install: npm ci --prefix siblings/host/siblings/model && npm ci --prefix siblings/host/siblings/typescript && npm ci --prefix siblings/host && npm install && npm install --prefix siblings/claude-code --no-save @anthropic-ai/claude-code@2.1.318
-      node_build: cmake -S siblings/host/siblings/library -B siblings/host/siblings/library/build && cmake --build siblings/host/siblings/library/build --config Release && cmake -S siblings/host/siblings/forebay-library -B siblings/host/siblings/forebay-library/build && cmake --build siblings/host/siblings/forebay-library/build --config Release --target apps && npm run build --prefix siblings/host/siblings/typescript && npm run build --prefix siblings/host && npx tsc -p siblings/anthropic-translator/tsconfig.build.json && npm run build
+      node_build: cmake -S siblings/host/siblings/library -B siblings/host/siblings/library/build && cmake --build siblings/host/siblings/library/build --config Release && cmake -S siblings/host/siblings/forebay-library -B siblings/host/siblings/forebay-library/build && cmake --build siblings/host/siblings/forebay-library/build --config Release --target forebay_library && npm run build --prefix siblings/host/siblings/typescript && npm run build --prefix siblings/host && npx tsc -p siblings/anthropic-translator/tsconfig.build.json && npm run build
       node_test: npm test
       cmake_configure: '-S siblings/host/siblings/library -B siblings/host/siblings/library/build'
       cmake_build: '--build siblings/host/siblings/library/build --config Release'
