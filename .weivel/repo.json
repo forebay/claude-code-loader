@@ -1,0 +1,66 @@
+{
+  "format": 1,
+  "importName": "claude-code-loader",
+  "description": "Declares Claude Code to the shared host: the application, its `cc` command and the plugins it requires.",
+  "topics": [
+    "ai",
+    "ai-proxy",
+    "app-loader",
+    "claude",
+    "forebay",
+    "llm",
+    "loader",
+    "typescript"
+  ],
+  "dependencies": [
+    {
+      "id": "github:1443361890",
+      "importName": "host",
+      "commit": "ab55d183d61cfbbc4ff12f02ddd5b4c39b8cf542"
+    },
+    {
+      "id": "github:1427176225",
+      "importName": "model",
+      "commit": "606988fb178b04d3f53835e6d982c09f31081ef1",
+      "path": "siblings/host/siblings/model"
+    },
+    {
+      "id": "github:1427561829",
+      "importName": "typescript",
+      "commit": "46bf872abbfcfe164294a9b3daa40fa0c26fff77",
+      "path": "siblings/host/siblings/typescript"
+    },
+    {
+      "id": "github:1434914426",
+      "importName": "library",
+      "commit": "004a16b0e601327732dee63fea8f76fdfcc5d3a9",
+      "path": "siblings/host/siblings/library"
+    },
+    {
+      "id": "github:1434954468",
+      "importName": "forebay-library",
+      "commit": "6fd0245f7bfbca794fe8b832b48c1eeb043f32fb",
+      "path": "siblings/host/siblings/forebay-library"
+    },
+    {
+      "id": "github:1315506225",
+      "importName": "anthropic-translator",
+      "commit": "e7229c190a615a5a67bbe99dd7668e448b768a5c"
+    },
+    {
+      "id": "github:1298569559",
+      "importName": "claude-code-proxy",
+      "commit": "6260cc82e85bbf41f0c74a4ca81e20692277c8c6"
+    },
+    {
+      "id": "github:1273458748",
+      "importName": "provider-stub",
+      "commit": "e04304cc33e2fd4b643d68ddbb9655c854a7e1e5"
+    },
+    {
+      "id": "github:1273458472",
+      "importName": "claude-code-provider",
+      "commit": "8ee1b79aa7ce3a7d5040a13d0e09021799441bfd"
+    }
+  ]
+}
